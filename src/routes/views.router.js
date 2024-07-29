@@ -1,5 +1,5 @@
 import { Router } from "express";
-
+import { leerProductos } from '../utils/products_utils.js';
 const app = Router();
 
 app.get('/', (req, res) => {
