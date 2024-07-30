@@ -3,13 +3,17 @@ import { leerProductos } from '../utils/products_utils.js';
 const app = Router();
 
 app.get('/', (req, res) => {
-    const { nombre } = req.query
-    res.render('saludo',{
-        name: nombre,
-        edad: 33
-    })
-})
+    const products = leerProductos();
+    res.render('home', { products });
+  });
 
+
+app.get('/realtimeproducts', (req, res) => {
+    const products = leerProductos();
+    res.render('realTime', { products });
+});
+
+  
 app.get('/admin', (req, res) => {
     
     res.render('admin',{

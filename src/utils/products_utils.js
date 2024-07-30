@@ -7,6 +7,7 @@ const productsFilePath = path.join(__dirname, '../data/productos.json');
 
 export const leerProductos = () => {
   try {
+    
     const data = readFileSync(productsFilePath);
     return JSON.parse(data);
   } catch (error) {

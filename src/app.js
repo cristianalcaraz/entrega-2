@@ -8,6 +8,7 @@ import productsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
 import viewsRouter from "./routes/views.router.js";
 import { leerProductos, guardarProductos } from './utils/products_utils.js';
+import e from 'express';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,14 +19,14 @@ const io = new Server(httpServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'src', 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Handlebars
 app.engine('handlebars', exphbs.engine({
   defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, 'src', 'views'));
+app.set('views', path.join(__dirname, 'views'));
 
 // Rutas
 app.use('/api/products', productsRouter);
@@ -42,7 +43,14 @@ io.on('connection', (socket) => {
  
   socket.on('newProduct', (product) => {
     const products = leerProductos();
-    products.push(product);
+    console.log(product)
+    const product2 = {
+      id: product.id,
+      title: product.name,
+      price: product.price
+    }
+    products.push(product2);
+    
     guardarProductos(products);
     io.emit('updateProducts', products);
   });
