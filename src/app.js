@@ -6,7 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import productsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
-import viewsRouter from './routes/viewes.router.js';
+import viewesRouter from "./routes/views.router.js";
 import { leerProductos, guardarProductos } from './utils/products_utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
