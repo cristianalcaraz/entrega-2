@@ -36,3 +36,5 @@ router.put('/:pid', (req, res) => {
   guardarProductos(products);
   res.json(products[productIndex]);
 });
+
+export default router;

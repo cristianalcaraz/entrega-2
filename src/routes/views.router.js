@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/admin', (req, res) => {
-    socketServer.emit()
+    
     res.render('admin',{
         isAdmin: false,
         notas: [{

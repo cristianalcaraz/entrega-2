@@ -1,7 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { leerProductos } from "../routes/views.router";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const productsFilePath = path.join(__dirname, '../data/productos.json');
