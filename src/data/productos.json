@@ -1,37 +1,17 @@
 [
   {
-    "id": "uuid1",
-    "title": "planta interior",
-    "price": 10.5,
-    "category": "interior"
+    "id": "1723339248458",
+    "title": "tostadas",
+    "price": "-2"
   },
   {
-    "id": "uuid2",
-    "title": "Rosa",
-    "price": 15,
-    "category": "exterior"
+    "id": "1723339264589",
+    "title": "asdasdasd",
+    "price": "7"
   },
   {
-    "id": "uuid4",
-    "title": "rosa amarilla",
-    "price": 12,
-    "category": "exterior"
-  },
-  {
-    "id": "6d265b22-6c3f-41b7-8e5e-366c29356ee3",
-    "title": "Producto de prueba",
-    "price": 100,
-    "category": "Categoría de prueba"
-  },
-  {
-    "id": "86cc39ea-dd82-4377-af49-7c20967af982",
-    "title": "Producto de prueba",
-    "price": 100,
-    "category": "Categoría de prueba"
-  },
-  {
-    "id": "1722304756717",
-    "title": "adsfasdasda",
-    "price": "12312312"
+    "id": "1723339271120",
+    "title": "asdasdasd",
+    "price": "4"
   }
 ]
