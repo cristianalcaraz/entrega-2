@@ -8,7 +8,13 @@ import productsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
 import viewsRouter from "./routes/views.router.js";
 import { leerProductos, guardarProductos } from './utils/products_utils.js';
-import e from 'express';
+import mongoose from 'mongoose';
+import dotenv from "dotenv";
+import 'dotenv/config';
+dotenv.config();
+
+const port = process.env.PORT || 3000;
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -72,3 +78,6 @@ const PORT = 8080;
 httpServer.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
+mongoose.connect(process.env.DATABASE_URL,{ dbName: 'ecommerce' }).then(()=>{
+  console.log('connect to database')
+})
