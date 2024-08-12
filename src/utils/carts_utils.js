@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import fs from 'fs/promises';
 
-const filePath = path.resolve('src/data/carritos.json');
+const filePath = path.resolve('../data/carritos.json');
 
 let carritos = [];
 
@@ -46,7 +46,7 @@ export const addProductToCart = (cid, pid) => {
 
 export async function getCartById(cartId) {
     try {
-      const data = await fs.readFile('src/data/carritos.json', 'utf-8');
+      const data = await fs.readFile('../data/carritos.json', 'utf-8');
       const carts = JSON.parse(data);
       const cart = carts.find(cart => cart.id === cartId);
       return cart;
@@ -58,7 +58,7 @@ export async function getCartById(cartId) {
   
   export async function deleteProductFromCart(cartId, productId) {
     try {
-      let data = await fs.readFile('src/data/carritos.json', 'utf-8');
+      let data = await fs.readFile('../data/carritos.json', 'utf-8');
       let carts = JSON.parse(data);
       const cartIndex = carts.findIndex(cart => cart.id === cartId);
   
@@ -69,7 +69,7 @@ export async function getCartById(cartId) {
       const updatedProducts = carts[cartIndex].products.filter(product => product.id !== productId);
       carts[cartIndex].products = updatedProducts;
   
-      await fs.writeFile('src/data/carritos.json', JSON.stringify(carts, null, 2), 'utf-8');
+      await fs.writeFile('../data/carritos.json', JSON.stringify(carts, null, 2), 'utf-8');
   
       return carts[cartIndex];
     } catch (error) {

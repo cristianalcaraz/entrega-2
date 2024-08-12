@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { application, Router } from "express";
 import { leerProductos } from '../utils/products_utils.js';
 const app = Router();
 
@@ -27,6 +27,14 @@ app.get('/admin', (req, res) => {
         }]
     })
 })
+
+app.get('/carts/:cid', (req, res) => {
+	const { cid } = req.params
+	res.render('carts', {
+		cid
+	})
+})
+
 
 app.get('/register', (req, res) => {
     res.render('register',{})

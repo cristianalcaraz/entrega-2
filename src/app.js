@@ -43,9 +43,8 @@ app.use('/', viewsRouter);
 io.on('connection', (socket) => {
   console.log('Usuario conectado');
 
-  
-  socket.emit('updateProducts', leerProductos());
 
+  socket.emit('updateProducts', leerProductos());
  
   socket.on('newProduct', (product) => {
     const products = leerProductos();
@@ -78,6 +77,7 @@ const PORT = 8080;
 httpServer.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
+
 mongoose.connect(process.env.DATABASE_URL,{ dbName: 'ecommerce' }).then(()=>{
   console.log('connect to database')
 })
