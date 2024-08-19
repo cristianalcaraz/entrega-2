@@ -1,72 +1,50 @@
 import fs from 'fs'
 import { v4 as uuidv4 } from 'uuid';
-import { api } from '../'
+import { api } from '../../constants/environments.js'
 const { base_url, endpoint_product, endpoint_cart, cart_mock } = api
+import Product from './product.model.js'; 
 
-export class Product {
-    constructor(title, description, price, thumbnail, code, stock){
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.thumbnail = thumbnail;
-        this.code = code;
-        this.stock = stock;
-        this.status = true;
-    }
-}
 
-export class ProductManager {
-    constructor(path){
+class ProductManager {
+    constructor(){
         this.id = 1;
         this.products = [];
-        this.path = path
     }
 
     async addProduct(product){
-        await this.getProducts()
-        const isCodeDuplicate = this.products.some(prod => prod.code === product.code)
-        const hasInvalidateProperty = Object.values(product).some(property => !property)
-
-        if(isCodeDuplicate) return console.log("Code Duplicate")
-        if(hasInvalidateProperty) return console.log("Invalid or incomplete information")
-
-        this.products.push({ ...product, id: uuidv4() })
+		
+		return await Product.create(product);
        
-        await fs.promises.writeFile(this.path, JSON.stringify({ data: this.products }))
     }
 
-    async getProducts(){
-        const response = await fs.promises.readFile(this.path, 'utf-8')
-        this.products = [...JSON.parse(response).data]
-        return [...this.products]
+    async getProducts( req){
+		const { limit = 10, page = 1, sort = '', ...query } = req.query;
+		const sortManager = {
+			'asc': 1,
+			'desc': -1
+		}
+		const products = await Product.paginate(
+			{ ...query },
+			{
+			limit,
+			page,
+			...(sort && { sort: { price: sortManager[sort] } }),
+			customLabels: { docs: 'payload' }
+			})
+        return products
     }
 
     async getProductById(id){
-        const products = await this.getProducts();
-        const productFinded = products.find(prod => prod.id === id);
-
-        return productFinded || console.log('Not found')         
+        return await Product.find({_id: id});
     }
 
     async updateProduct(id, payload){
-        this.products = await this.getProducts()
-        const productsUpdated = this.products.map(prod => {
-            if(prod.id !== id) return prod
-            
-            return {
-                ...prod,
-                ...payload,
-                id: prod.id
-            }
-        });
-
-        this.products = [...productsUpdated]
-        await fs.promises.writeFile(this.path,JSON.stringify({ data: this.products }))
+       return await Product.updateOne({_id: id}, {$set: payload});
     }
 
     async deleteProduct(id){
-        this.products = this.products.filter(prod => prod.id !== id)
-        await fs.promises.writeFile(this.path, JSON.stringify({ data: this.products }))
+		await Product.deleteOne({_id:id});
+        return "success";
     }
 }
 
@@ -158,3 +136,5 @@ getProducts((error, data)=>{
 		renderCardsFromDataToContainer(data, productsContainer)
 	}
 });
+
+export {ProductManager};

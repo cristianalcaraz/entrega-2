@@ -3,7 +3,23 @@ import { CartManager } from '../Dao/model/cart.js';
 import { cartModel } from '../Dao/model/cart.model.js';
 
 const router = Router();
-const cartsManager = new CartManager('./src/data/databasecarts.json');
+
+router.get('/', async (req, res) => {
+    try {
+        const carts = await cartModel.find();
+        
+        res.send({
+            status: "success",
+            carts: carts
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({
+            status: 'error',
+            msg: 'Internal server error',
+        });
+    }
+});
 
 router.post('/', async (req, res) => {
     const newCart = await cartModel.create({
@@ -16,7 +32,7 @@ router.post('/', async (req, res) => {
 router.get('/:cid', async (req, res) => {
     const { cid } = req.params;
 	
-    const cartFinded = await cartModel.findById(cid).populate('products.product');
+    const cartFinded = await cartModel.findById(cid);
 
     const status = cartFinded ? 200 : 404;
 
@@ -74,7 +90,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
     }
     const cartUpdated = await cartModel.findByIdAndUpdate(cid,cartFinded, {
         new: true,
-    }).populate('products.product')
+    })
 
     res.status(201).json({ message: 'Product Added', cart: cartUpdated})
 
@@ -93,7 +109,7 @@ router.put('/:cid/product/:pid', async (req, res) => {
     
     const cartUpdated = await cartModel.findByIdAndUpdate(cid,cartFinded, {
         new: true,
-    }).populate('products.product')
+    })
 
     res.status(201).json({ message: 'Product Quantity Modify', cart: cartUpdated })
 
@@ -112,7 +128,7 @@ router.delete('/:cid/product/:pid', async (req, res) => {
 
     const cartUpdated = await cartModel.findByIdAndUpdate(cid,cartFiltered, {
         new: true,
-    }).populate('products.product')
+    })
 
     res.status(201).json({ message: 'Product deleted', cart: cartUpdated})
 });

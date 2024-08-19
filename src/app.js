@@ -22,6 +22,12 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
+mongoose.connect('mongodb+srv://cristianalcaraz:9TBmVJbPBy3QIEJW@coderback.ptzqqzi.mongodb.net/ecommerce').then(()=>{
+  console.log('Connected to MongoDB Atlas');
+})
+.catch(err => {
+  console.error('Error connecting to MongoDB Atlas:', err.message);
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -29,7 +35,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Handlebars
 app.engine('handlebars', exphbs.engine({
-  defaultLayout: 'main'
+  defaultLayout: 'main',
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
+  },
 }));
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
@@ -78,6 +88,3 @@ httpServer.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
 
-mongoose.connect(process.env.DATABASE_URL,{ dbName: 'ecommerce' }).then(()=>{
-  console.log('connect to database')
-})
