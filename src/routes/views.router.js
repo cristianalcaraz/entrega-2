@@ -1,17 +1,35 @@
-import { Router } from "express";
+import { application, Router } from "express";
+import { ProductManager } from '../Dao/model/product.js';
 import { leerProductos } from '../utils/products_utils.js';
 const app = Router();
 
-app.get('/', (req, res) => {
-    const { nombre } = req.query
-    res.render('saludo',{
-        name: nombre,
-        edad: 33
-    })
-})
+const productsManager = new ProductManager();
 
+app.get('/', async (req, res) => {
+    const result = await productsManager.getProducts(req)
+    console.log(result.payload)
+    res.render('home', {
+        products: result.payload,
+        totalPages: result.totalPages,
+        prevPage: result.prevPage,
+        nextPage: result.nextPage,
+        currentPage: result.page,
+        hasPrevPage: result.hasPrevPage,
+        hasNextPage: result.hasNextPage,
+        prevLink: result.hasPrevPage ? `/home?page=${result.prevPage}&limit=${limit}&sort=${sort}&query=${query}` : null,
+        nextLink: result.hasNextPage ? `/home?page=${result.nextPage}&limit=${limit}&sort=${sort}&query=${query}` : null
+    });
+  });
+
+
+app.get('/realtimeproducts', async (req, res) => {
+    const products = await productsManager.getProducts(req)
+    res.render('realTime', { products });
+});
+
+  
 app.get('/admin', (req, res) => {
-    socketServer.emit()
+    
     res.render('admin',{
         isAdmin: false,
         notas: [{
@@ -23,6 +41,14 @@ app.get('/admin', (req, res) => {
         }]
     })
 })
+
+app.get('/carts/:cid', (req, res) => {
+	const { cid } = req.params
+	res.render('carts', {
+		cid
+	})
+})
+
 
 app.get('/register', (req, res) => {
     res.render('register',{})

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Lista de Productos</h1>
+
+    <ul>
+        {{#each products}}
+        <li>
+            <strong>{{this.title}}</strong> - ${{this.price}}
+            <br> Categoría: {{this.category}}
+            <br> {{#if this.available}}Stock disponible: {{this.stock}}{{else}}No disponible{{/if}}
+        </li>
+        {{/each}}
+    </ul>
+
+    <div class="pagination">
+        {{#if hasPrevPage}}
+            <a href="{{prevLink}}">« Página Anterior</a>
+        {{/if}}
+       
+        Página {{currentPage}} de {{totalPages}}
+
+        {{#if hasNextPage}}
+            <a href="{{nextLink}}">Página Siguiente »</a>
+        {{/if}}
+    </div>
+</body>
+</html>
+<script src="./socket.io/socket.io.js"></script>
+<script src="/public/index.js"></script>
